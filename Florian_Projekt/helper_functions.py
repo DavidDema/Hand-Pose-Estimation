@@ -118,14 +118,14 @@ def detect_marker(frame, mtx, dist, aruco_params, aruco_dict, marker_length):
 
 def show_coordinates(frame, tvec, corners, id):
     org = (corners[0].astype(int), corners[1].astype(int))
-    cv2.putText(frame, f"ID: {id} Koordinaten:  x: {tvec[0]:.2f}m", org,
+    cv2.putText(frame, f"ID: {id} Koordinaten:  x: {tvec[0]:.2f}cm", org,
                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
     cv2.putText(frame,
-                f"y: {tvec[1]:.2f}m",
+                f"y: {tvec[1]:.2f}cm",
                 (corners[0].astype(int) + 185, corners[1].astype(int) + 20),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
     cv2.putText(frame,
-                f"z: {tvec[2]:.2f}m",
+                f"z: {tvec[2]:.2f}cm",
                 (corners[0].astype(int) + 185, corners[1].astype(int) + 40),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
     return frame

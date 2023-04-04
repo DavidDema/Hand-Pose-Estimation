@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 from helper_functions import *
 
 
-thumb_landmark_index = 8
+thumb_landmark_index = 4
 # Webcam
 cap = cv2.VideoCapture(0)
 #cap.set(3, 1280)
@@ -21,7 +21,7 @@ ret, img = cap.read()
 mtx, dist, aruco_params, aruco_dict = start_aruco()
 pixel_size = (mtx[0][0] + mtx[1][1]) / 2
 marker_size = 0.04
-
+pixel_distance = 50
 # Hand Detector
 #detector = HandDetector(detectionCon=0.8, maxHands=2)
 mp_hands = mp.solutions.hands.Hands()
@@ -59,6 +59,8 @@ while True:
 
         # Detect ArUco markers
         corners, ids, rejectedImgPoints = cv2.aruco.detectMarkers(img, aruco_dict, parameters=aruco_params)
+        if corners:
+            pixel_distance = np.sqrt(np.sum(np.square(corners[0][0][0] - corners[0][0][2])))
 
         # Get the position of the thumb relative to the ArUco marker
         if ids is not None and len(ids) > 0:
@@ -70,13 +72,14 @@ while True:
             thumb_relative_y = thumb_y - marker_center_y
 
             # Calculate the world coordinate of the thumb
-            thumb_world_x = thumb_relative_x * marker_size / img.shape[1]
-            thumb_world_y = thumb_relative_y * marker_size / img.shape[0]
+            thumb_world_x = thumb_x * marker_size / pixel_distance
+            thumb_world_y = thumb_y * marker_size / pixel_distance
             thumb_world_z = tvecs[0][0][2]
 
             # Print the world coordinate of the thumb
             print(
                 "Thumb world coordinate: ({:.3f}, {:.3f}, {:.3f})".format(thumb_world_x, thumb_world_y, thumb_world_z))
+            img = show_coordinates(img, (thumb_world_x*100., thumb_world_y*100., thumb_world_z*100.), (np.float32(thumb_x),np.float32(thumb_y)),1)
 
 
     cv2.imshow("Image", img)
