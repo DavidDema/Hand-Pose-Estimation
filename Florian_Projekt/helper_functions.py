@@ -116,7 +116,15 @@ def detect_marker(frame, mtx, dist, aruco_params, aruco_dict, marker_length):
     return frame, tvecs, rvecs, corners, ids
 
 
-def show_coordinates(frame, tvec, corners, id):
+def show_coordinates(frame, tvec, corners, id = 0):
+    """
+    This function prints the coordinates on the image
+    :param frame: image where the text will be printed on
+    :param tvec: coordinates of the object
+    :param corners: pixel coordinates where the text will be printed
+    :param id: ID of Aruco marker
+    :return: image with text on it
+    """
     org = (corners[0].astype(int), corners[1].astype(int))
     cv2.putText(frame, f"ID: {id} Koordinaten:  x: {tvec[0]:.2f}cm", org,
                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
