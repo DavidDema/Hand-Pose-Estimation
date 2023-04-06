@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/PollingSample2.dir/PollingSample2.c.o CMakeFiles/libExampleConnection.dir/ExampleConnection.c.o -o PollingSample2  -Wl,-rpath,/usr/lib/ultraleap-hand-tracking-service /usr/lib/ultraleap-hand-tracking-service/libLeapC.so.5 

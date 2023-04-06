@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/leapc_example.dir/leapc_main.c.o -o leapc_example  -Wl,-rpath,/usr/lib/ultraleap-hand-tracking-service /usr/lib/ultraleap-hand-tracking-service/libLeapC.so.5 
