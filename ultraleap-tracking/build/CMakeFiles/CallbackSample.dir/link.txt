@@ -1,1 +1,0 @@
-/usr/bin/cc CMakeFiles/CallbackSample.dir/CallbackSample.c.o CMakeFiles/libExampleConnection.dir/ExampleConnection.c.o -o CallbackSample  -Wl,-rpath,/usr/lib/ultraleap-hand-tracking-service /usr/lib/ultraleap-hand-tracking-service/libLeapC.so.5 
