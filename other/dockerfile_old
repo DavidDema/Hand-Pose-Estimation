@@ -17,9 +17,6 @@ RUN apt-get update && apt-get install --no-install-recommends -y --allow-unauthe
      git \
      && rm -rf /var/lib/apt/lists/*
 RUN pip3 install --upgrade pip
-RUN pip install matplotlib
-
-ENV MPLBACKEND=TkAgg
 
 # bootstrap rosdep
 #RUN rosdep init && \
@@ -39,18 +36,18 @@ RUN mkdir -p ~/catkin_build_ws/src
 
 # ------- CHANGE ----
 # COPY hpe_leap files into catkin_build_ws
-#RUN mkdir -p ~/catkin_build_ws/src/hpe_leap
+RUN mkdir -p ~/catkin_build_ws/src/hpe_leap
 #WORKDIR root/catkin_build_ws/src/
-#ADD ./leap/hpe_leap/ /root/catkin_build_ws/src/hpe_leap/
-#RUN chmod +x ~/catkin_build_ws/src/hpe_leap/src/hpe_leap_ros.py
+ADD ./leap/hpe_leap/ /root/catkin_build_ws/src/hpe_leap/
+RUN chmod +x ~/catkin_build_ws/src/hpe_leap/src/hpe_leap_ros.py
 
-#RUN mkdir -p ~/catkin_build_ws/src/hpe
-#ADD ./hpe/ /root/catkin_build_ws/src/hpe/
-#RUN chmod +x ~/catkin_build_ws/src/hpe/src/hpe_node.py
+RUN mkdir -p ~/catkin_build_ws/src/hpe
+ADD ./hpe/ /root/catkin_build_ws/src/hpe/
+RUN chmod +x ~/catkin_build_ws/src/hpe/src/hpe_node.py
 
 # COPY leap client
-#RUN mkdir -p ~/leap
-#ADD ./leap/ /root/leap
+RUN mkdir -p ~/leap
+ADD ./leap/ /root/leap
 
 # source the catkin workspace
 RUN /bin/bash -c '. /opt/ros/noetic/setup.bash; cd ~/catkin_build_ws; catkin build'

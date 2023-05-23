@@ -34,7 +34,8 @@ int main(int argc, char** argv) {
   // Leap setup
   // ------------------------------
   printf("LeapSocketServer V1.0\n");
-  OpenConnection();
+  LEAP_CONNECTION *connection = OpenConnection();
+
   while(!IsConnected)
     millisleep(100); //wait a bit to let the connection complete
 
@@ -42,6 +43,12 @@ int main(int argc, char** argv) {
   LEAP_DEVICE_INFO* deviceProps = GetDeviceProperties();
   if(deviceProps)
     printf("Using device %s.\n", deviceProps->serial);
+
+  // Set tracking mode
+  //enum eLeapTrackingMode mode = eLeapTrackingMode_HMD;
+  //LeapSetTrackingMode(*connection, mode) 
+  // 1: HeadMountedDevice; 0: Desktop; 3: Screen-Top
+  LeapSetTrackingMode(*connection, 1);
 
   // ------------------------------
   // Socket setup
@@ -96,19 +103,10 @@ int main(int argc, char** argv) {
       //printf("Frame %lli with %i hands.\n", (long long int)frame->tracking_frame_id, frame->nHands);
 
       bool status = false;
-      float data_send[19];
+      float data_send[10];
 
       if(frame->nHands<1){
         float data[] = {
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0,
           0.0,
           0.0,
           0.0,
@@ -125,26 +123,19 @@ int main(int argc, char** argv) {
         //for(uint32_t h = 0; h < frame->nHands; h++){
         LEAP_HAND* hand = &frame->pHands[0];
         
+        // each finger has three bones metacarpal, proximal, intermediate and distal
+
         if(TEST==false){
           float data[] = {
-            hand->palm.position.x,
-            hand->palm.position.y,
-            hand->palm.position.z,
+            hand->index.proximal.prev_joint.x,
+            hand->index.proximal.prev_joint.y,
+            hand->index.proximal.prev_joint.z,
             hand->thumb.distal.next_joint.x,
             hand->thumb.distal.next_joint.y,
             hand->thumb.distal.next_joint.z,
             hand->index.distal.next_joint.x,
             hand->index.distal.next_joint.y,
             hand->index.distal.next_joint.z,
-            hand->middle.distal.next_joint.x,
-            hand->middle.distal.next_joint.y,
-            hand->middle.distal.next_joint.z,
-            hand->ring.distal.next_joint.x,
-            hand->ring.distal.next_joint.y,
-            hand->ring.distal.next_joint.z,
-            hand->pinky.distal.next_joint.x,
-            hand->pinky.distal.next_joint.y,
-            hand->pinky.distal.next_joint.z,
             hand->pinch_distance
           };
           memcpy(data_send, data, sizeof(data));
@@ -159,16 +150,7 @@ int main(int argc, char** argv) {
             7.0,
             8.0,
             9.0,
-            10.0,
-            11.0,
-            12.0,
-            13.0,
-            14.0,
-            15.0,
-            16.0,
-            17.0,
-            18.0,
-            19.0
+            10.0
           };
           memcpy(data_send, data, sizeof(data));
         }

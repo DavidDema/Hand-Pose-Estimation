@@ -20,6 +20,15 @@ rate = rospy.Rate(100) # Rate in Hz
 pub_pose = rospy.Publisher('/hpe_leap/pose', Pose, queue_size=10, tcp_nodelay=True)
 pose_msg = Pose()
 
+def rpy2qt(pose_rpy):
+    """ Convert pose with rpy-euler angle to quarternion angle representation """
+    pose_qt = np.zeros(shape=(7), dtype=np.float32)
+    
+    # TODO convert
+    pose_qt[0:6] = pose_rpy
+
+    return pose_qt
+
 def get_pose(wrist:np.ndarray, thumb:np.ndarray, index:np.ndarray) -> np.ndarray:
     """ Calculate the coordinate system pose between the fingers with euler angles """
     pose = np.zeros(shape=(6), dtype=np.float32)
@@ -30,15 +39,6 @@ def get_pose(wrist:np.ndarray, thumb:np.ndarray, index:np.ndarray) -> np.ndarray
     # pose[3:6] = [0, 0, 0]
 
     return pose
-
-def rpy2qt(pose_rpy):
-    """ Convert pose with rpy-euler angle to quarternion angle representation """
-    pose_qt = np.zeros(shape=(7), dtype=np.float32)
-    
-    # TODO convert
-    pose_qt[0:6] = pose_rpy
-
-    return pose_qt
 
 # Socket thread
 def socket_listen():
